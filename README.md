@@ -1,4 +1,4 @@
-# PHY-104: Wave and Optics
+# Wave and Optics
 
 Welcome to the **Wave and Optics** repository! This repository serves as the central digital hub for all course materials, interactive physics simulations, lecture slides, problem sets, and quizzes designed to help students master oscillatory mechanics, wave phenomena, and optics.
 
