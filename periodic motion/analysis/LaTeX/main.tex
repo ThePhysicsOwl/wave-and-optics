@@ -20,7 +20,7 @@
 \maketitle
 
 \section{Introduction}
-This report presents a detailed analysis of the data obtained from simulating the motion of a damped, driven simple pendulum. I investigate the kinematics (displacement, velocity, and acceleration), the energy flow (potential, kinetic, and total mechanical energy), the stability of the physical parameters (amplitude, period, frequency, and angular frequency) over time, and the phase-space trajectories of the system.
+This report presents a detailed analysis of the data obtained from simulating the motion of a damped, driven simple pendulum. The kinematics (displacement, velocity, and acceleration), the energy flow (potential, kinetic, and total mechanical energy), the stability of the physical parameters (amplitude, period, frequency, and angular frequency) over time, and the phase-space trajectories of the system are investigated here.
 
 \section{Theory}
 The motion of a simple pendulum is described by the second-order differential equation:
@@ -28,11 +28,11 @@ The motion of a simple pendulum is described by the second-order differential eq
     \ddot{\theta} + \frac{g}{l} \sin{\theta} = 0
     \label{sp1}
 \end{equation}
-where the angular frequency is $\omega=\sqrt{g/l}$ and period $T=2\pi/\omega$.
+where the angular frequency is $\omega_0=\sqrt{g/l}$ and period $T=2\pi/\omega_0$.
 
 Hence, \cref{sp1} can be rewritten as:
 \begin{equation}
-    \ddot{\theta} + \omega^2 \sin{\theta} = 0
+    \ddot{\theta} + \omega_0^2 \sin{\theta} = 0
     \label{sp2}
 \end{equation}
 
@@ -46,13 +46,14 @@ The energy of the system can be calculated as:
 
 Under linear damping and a time-varying driving force, $F_d \cos{\omega_d t}$ \cref{sp2} and \cref{energy} become:
 \begin{equation}
-    \ddot{\theta} + \gamma \dot{\theta} + \omega^2 \sin{\theta} = A_d \cos{\omega_d t}
+    \ddot{\theta} + \gamma \dot{\theta} + \omega_0^2 \sin{\theta} = A_d \cos{\omega_d t}
     \label{sp3}
 \end{equation}
 
 where,
 \begin{itemize}
-    \item $\gamma  = \dfrac{b}{ml^2}$, is the damping factor, and
+    \item $\gamma  = \dfrac{b}{ml^2}$, is the damping factor,
+    \item $\omega_d$ is the driving angular frequency, and
     \item $A_d = \dfrac{F} {ml}$, is the amplitude of the driving angular acceleration.
 \end{itemize}
 
@@ -64,15 +65,15 @@ The period and frequency under these conditions become:
 \end{eqnarray}
 
 \section{Data and Analysis}
-For our simulation I used the following constant parameters:
+For the simulation the following constant parameters were set:
 
 \begin{enumerate}
-    \item Mass of the pendulum ($m$): 1 kg
-    \item Length of pendulum ($l$): 3m
-    \item Damping coefficient ($b$): 0.05
-    \item Driving torque amplitude ($\tau_d$): 1Nm
-    \item Driving frequency ($\omega_d$): 1.8 rad/s
-    \item Natural frequency ($\omega_0$): 1.8 rad/s
+    \item Mass of the pendulum ($m$): \SI{1}{\kilogram}
+    \item Length of pendulum ($l$): \SI{3}{\meter}
+    \item Damping coefficient ($b$): \SI{0.05}{\kilogram\per\second}
+    \item Driving torque amplitude ($\tau_d$): \SI{1}{\newton\meter}
+    \item Driving frequency ($\omega_d$): \SI{1.8}{\radian\per\second}
+    \item Natural frequency ($\omega_0$): \SI{1.8}{\radian\per\second}
 \end{enumerate}
 
 The following initial conditions were also set:
@@ -83,15 +84,20 @@ The following initial conditions were also set:
 \end{enumerate}
 
 The following observations were made from the data analysis of the simulation:
+
+\newpage
+
 \subsection{Kinematics}
 For each of the kinematic variables of displacement, velocity, acceleration and torque, the following trends were observed:
 
 \begin{itemize}
     \item The data set can be divided into regions at varying intervals called beats.
-    \item The peaks of these regions are decreasing as well as their width.
+    \item The amplitude and width of these beats decrease over time.
     \item Fitting a trend line, we see that the crests and troughs of the beats approach a constant value and the beats fuse into one.
     \item steady-state value of the amplitude is approximately \SI{0.7}{\radian}, velocity \SI{1.2}{\radian\per\second}, and acceleration \SI{2}{\radian\per\second\squared}.
 \end{itemize}
+
+\vfill
 
 \begin{figure}[H]
     \centering
@@ -110,23 +116,18 @@ Analysis of the energy data of the system shows that:
     \item this decline of total energy caused by damping is counteracted by the driving torque, resulting in a constant energy value in the steady state.
     \item the steady-state value of the total energy is approximately \SI{6}{\joule}.
 \end{itemize}
-\vfill
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{C:/Users/PC/Desktop/Projects/physics/waves and optics/periodic motion/harmonic oscillator lab/analysis/plots/energy_combined_0_75.png}
+
+    \includegraphics[width=\textwidth]{C:/Users/PC/Desktop/Projects/physics/waves and optics/periodic motion/harmonic oscillator lab/analysis/plots/energy_combined_0_2000.png}
+    \caption{Potential, kinetic, and total mechanical energy as functions of time.}
     \label{energy_graph}
 \end{figure}
 
-\begin{figure}[H]
-    \ContinuedFloat
-    \centering
-    \includegraphics[width=\textwidth]{C:/Users/PC/Desktop/Projects/physics/waves and optics/periodic motion/harmonic oscillator lab/analysis/plots/energy_combined_0_2000.png}
-    \caption{Potential, kinetic, and total mechanical energy as functions of time.}
-\end{figure}
-
 \subsection*{System parameters}
-Finally, analysis of the following system parameters: amplitude, period, frequency, and angular frequency shows that:
+Analysis of the following system parameters: amplitude, period, frequency, and angular frequency shows that:
 \begin{itemize}
     \item  Crests and troughs of the amplitude, period, frequency, and angular frequency graphs shrink to give steady-state values of approximately \SI{0.7}{\radian}, \SI{3.555}{\second}, \SI{0.28}{\hertz}, and \SI{1.76}{\radian\per\second} respectively.
     \item The period is affected more by damping than by the driving force, evident by the greater decay of the upper envelope than the growth of the lower envelope.
@@ -143,7 +144,7 @@ Finally, analysis of the following system parameters: amplitude, period, frequen
 \subsection{Phase space}
 Plotting the phase space trajectory of the system the following observations were made:
 \begin{itemize}
-    \item At the start of the motion (0 to 100s), the pendulum attains its absolute maximum velocity ($\approx$ \SI{2}{\radian\per\second}) and displacement ($\approx$ \SI{1}{\radian\per\second}).
+    \item At the start of the motion (0 to 100s), the pendulum attains its absolute maximum velocity ($\approx$ \SI{2}{\radian\per\second}) and displacement ($\approx$ \SI{1}{\radian}).
     \item Over 0 to 600s, the graph begins to concentrate in the middle.
     \item From 1500 to 2000s, the loops settle into a single steady-state loop - evidence of the stabilization of energy.
     \item the velocity and displacement in steady-state correspond to those obtained from the kinematic analysis.
