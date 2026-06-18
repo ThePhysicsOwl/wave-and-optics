@@ -1,0 +1,193 @@
+% Minimal LaTeX document for harmonic oscillator lab analysis
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{siunitx}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{float}
+\usepackage{caption}
+\geometry{margin=1in}
+
+\title{Analysis of Dataset Obtained from the Harmonic Oscillator Simulation Lab}
+\author{Paul Ndulue}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+This report presents a detailed analysis of the data obtained from simulating the motion of a damped, driven simple pendulum. I investigate the kinematics (displacement, velocity, and acceleration), the energy flow (potential, kinetic, and total mechanical energy), the stability of the physical parameters (amplitude, period, frequency, and angular frequency) over time, and the phase-space trajectories of the system.
+
+\section{Theory}
+The motion of a simple pendulum is described by the second-order differential equation:
+\begin{equation}
+    \ddot{\theta} + \frac{g}{l} \sin{\theta} = 0
+    \label{sp1}
+\end{equation}
+where the angular frequency is $\omega=\sqrt{g/l}$ and period $T=2\pi/\omega$.
+
+Hence, \cref{sp1} can be rewritten as:
+\begin{equation}
+    \ddot{\theta} + \omega^2 \sin{\theta} = 0
+    \label{sp2}
+\end{equation}
+
+This equation can be solved numerically using the Runge-Kutta (RK4) method to obtain the angular displacement as a function of time $\theta(t)$, angular velocity $\dot{\theta}(t)$, and angular acceleration $\ddot{\theta}(t)$.
+
+The energy of the system can be calculated as:
+\begin{equation}
+    E = \frac{1}{2} m l^2 \dot{\theta}^2 + m g l (1 - \cos{\theta})
+    \label{energy}
+\end{equation}
+
+Under linear damping and a time-varying driving force, $F_d \cos{\omega_d t}$ \cref{sp2} and \cref{energy} become:
+\begin{equation}
+    \ddot{\theta} + \gamma \dot{\theta} + \omega^2 \sin{\theta} = A_d \cos{\omega_d t}
+    \label{sp3}
+\end{equation}
+
+where,
+\begin{itemize}
+    \item $\gamma  = \dfrac{b}{ml^2}$, is the damping factor, and
+    \item $A_d = \dfrac{F} {ml}$, is the amplitude of the driving angular acceleration.
+\end{itemize}
+
+The period and frequency under these conditions become:
+
+\begin{eqnarray}
+    T = 2\pi \sqrt{\frac{l}{g}} \left(1 + \frac{1}{4}\sin^2{\frac{\Theta}{2}} + \frac{9}{64}\sin^4{\frac{\Theta}{2}} + \cdots \right) \\
+    f = \frac{1}{2\pi} \sqrt{\frac{g}{l}} \left(1 - \frac{1}{4}\sin^2{\frac{\Theta}{2}} - \frac{9}{64}\sin^4{\frac{\Theta}{2}} + \cdots \right)
+\end{eqnarray}
+
+\section{Data and Analysis}
+For our simulation I used the following constant parameters:
+
+\begin{enumerate}
+    \item Mass of the pendulum ($m$): 1 kg
+    \item Length of pendulum ($l$): 3m
+    \item Damping coefficient ($b$): 0.05
+    \item Driving torque amplitude ($\tau_d$): 1Nm
+    \item Driving frequency ($\omega_d$): 1.8 rad/s
+    \item Natural frequency ($\omega_0$): 1.8 rad/s
+\end{enumerate}
+
+The following initial conditions were also set:
+
+\begin{enumerate}
+    \item Angular displacement($\theta$): \SI{0.1}{\radian}
+    \item Angular velocity ($\dot{\theta}$): \SI{0.0}{\radian\per\second}
+\end{enumerate}
+
+The following observations were made from the data analysis of the simulation:
+\subsection{Kinematics}
+For each of the kinematic variables of displacement, velocity, acceleration and torque, the following trends were observed:
+
+\begin{itemize}
+    \item The data set can be divided into regions at varying intervals called beats.
+    \item The peaks of these regions are decreasing as well as their width.
+    \item Fitting a trend line, we see that the crests and troughs of the beats approach a constant value and the beats fuse into one.
+    \item steady-state value of the amplitude is approximately \SI{0.7}{\radian}, velocity \SI{1.2}{\radian\per\second}, and acceleration \SI{2}{\radian\per\second\squared}.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{C:/Users/PC/Desktop/Projects/physics/waves and optics/periodic motion/harmonic oscillator lab/analysis/plots/kinematics_combined_0_300.png}
+
+    \includegraphics[width=\textwidth]{C:/Users/PC/Desktop/Projects/physics/waves and optics/periodic motion/harmonic oscillator lab/analysis/plots/kinematics_combined_0_600.png}
+    \caption{Angular displacement, velocity, and acceleration as functions of time.}
+    \label{kinematics}
+\end{figure}
+
+\subsection{Energy}
+Analysis of the energy data of the system shows that:
+\begin{itemize}
+    \item the total mechanical energy of the system is not conserved.
+    \item the potential and kinetic energies oscillate in a periodic manner, with the total energy decreasing over time due to damping.
+    \item this decline of total energy caused by damping is counteracted by the driving torque, resulting in a constant energy value in the steady state.
+    \item the steady-state value of the total energy is approximately \SI{6}{\joule}.
+\end{itemize}
+\vfill
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{C:/Users/PC/Desktop/Projects/physics/waves and optics/periodic motion/harmonic oscillator lab/analysis/plots/energy_combined_0_75.png}
+    \label{energy_graph}
+\end{figure}
+
+\begin{figure}[H]
+    \ContinuedFloat
+    \centering
+    \includegraphics[width=\textwidth]{C:/Users/PC/Desktop/Projects/physics/waves and optics/periodic motion/harmonic oscillator lab/analysis/plots/energy_combined_0_2000.png}
+    \caption{Potential, kinetic, and total mechanical energy as functions of time.}
+\end{figure}
+
+\subsection*{System parameters}
+Finally, analysis of the following system parameters: amplitude, period, frequency, and angular frequency shows that:
+\begin{itemize}
+    \item  Crests and troughs of the amplitude, period, frequency, and angular frequency graphs shrink to give steady-state values of approximately \SI{0.7}{\radian}, \SI{3.555}{\second}, \SI{0.28}{\hertz}, and \SI{1.76}{\radian\per\second} respectively.
+    \item The period is affected more by damping than by the driving force, evident by the greater decay of the upper envelope than the growth of the lower envelope.
+    \item The amplitude, frequency, and angular frequency are affected more by the driving force than by damping, as evident in the boundary trends.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{C:/Users/PC/Desktop/Projects/physics/waves and optics/periodic motion/harmonic oscillator lab/analysis/plots/parameters_combined_0_2000.png}
+    \caption{Amplitude, period, frequency, and angular frequency as functions of time.}
+    \label{system_parameters}
+\end{figure}
+
+\subsection{Phase space}
+Plotting the phase space trajectory of the system the following observations were made:
+\begin{itemize}
+    \item At the start of the motion (0 to 100s), the pendulum attains its absolute maximum velocity ($\approx$ \SI{2}{\radian\per\second}) and displacement ($\approx$ \SI{1}{\radian\per\second}).
+    \item Over 0 to 600s, the graph begins to concentrate in the middle.
+    \item From 1500 to 2000s, the loops settle into a single steady-state loop - evidence of the stabilization of energy.
+    \item the velocity and displacement in steady-state correspond to those obtained from the kinematic analysis.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{C:/Users/PC/Desktop/Projects/physics/waves and optics/periodic motion/harmonic oscillator lab/analysis/plots/phase_nb_0_100.png}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{C:/Users/PC/Desktop/Projects/physics/waves and optics/periodic motion/harmonic oscillator lab/analysis/plots/phase_nb_0_600.png}
+    \end{minipage}
+
+    \vspace{0.5cm}
+
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{C:/Users/PC/Desktop/Projects/physics/waves and optics/periodic motion/harmonic oscillator lab/analysis/plots/phase_nb_1500_2000.png}
+    \end{minipage}
+    \caption{Phase space trajectory of the system.}
+    \label{phase_space}
+\end{figure}
+
+\section{Conclusion}
+This simulation shows that
+\begin{itemize}
+    \item the motion of a simple pendulum under the influence of damping can be made to behave like one without damping if an appropriate driving force of specific magnitude and frequency is applied.
+    \item the kinematic variables of the system (displacement, velocity, and acceleration) as well as the energy flow (potential, kinetic, and total mechanical energy) stabilize to a simple harmonic behaviour, without beats, in the steady state.
+    \item the system parameters (amplitude, period, frequency, and angular frequency) also stabilize to constant values in the steady state.
+    \item finally, the phase space trajectory of the system shows that the system settles into a single steady-state loop in the long term.
+\end{itemize}
+
+\begin{thebibliography}{99}
+
+    \bibitem{YoungFreedman} Young, H. D., \& Freedman, R. A. (2015). \textit{University Physics} (15th ed.). Pearson Education.
+
+    \bibitem{DataFile} Harmonic oscillator simulation data. Retrieved from \texttt{C:/Users/PC/Desktop/Projects/physics/waves and optics/periodic motion/harmonic oscillator lab/analysis/data/harmonic\_oscillator\_export}
+
+    \bibitem{YouTube} Shankar, R. (2008). Fundamentals of Physics with Ramamurti Shankar: Lecture 18 - Simple Harmonic Motion (Contd.) and Introduction to Waves. Yale Open Courses. Retrieved from \url{https://youtu.be/v_iNt0FPpwU?si=0ruRsLqZNc1Wa4F-}
+
+\end{thebibliography}
+
+\end{document}
