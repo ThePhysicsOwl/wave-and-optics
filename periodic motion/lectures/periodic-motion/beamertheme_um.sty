@@ -1,0 +1,479 @@
+%==========================================================================
+%  beamertheme_um.sty  —  "Understanding Motion" Beamer Theme
+%
+%  Merges three design sources:
+%    1. The Legrand Orange Book  — color palette, TikZ watermarks, tcolorbox
+%       environments (theorem/definition/law/example/corollary/remark)
+%    2. Understanding Motion textbook  — steel-blue ocre, multi-color env
+%       palette, full-bleed chapter openers, part-quote overlays
+%    3. DEXPI Beamer Theme  — diagonal polygon block headers, corner accent
+%       decoration, slanted title-page layout, Helvetica sans-serif
+%
+%  License:  CC BY-SA 4.0 (derived from DEXPI theme, CC BY-SA 4.0)
+%            The Legrand Orange Book portions: CC BY-NC-SA 3.0
+%==========================================================================
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamertheme_um}[2024/05/14 UM Beamer Theme]
+
+%--------------------------------------------------------------------------
+% 0.  PACKAGES
+%--------------------------------------------------------------------------
+\RequirePackage{tikz}
+\RequirePackage{xcolor}
+\RequirePackage{amsmath,amssymb,amsfonts}
+\RequirePackage[most]{tcolorbox}
+\RequirePackage{booktabs}
+\RequirePackage{microtype}
+\RequirePackage{graphicx}
+\RequirePackage{helvet}          % DEXPI: Helvetica sans-serif
+\renewcommand{\familydefault}{\sfdefault}
+
+\usetikzlibrary{calc, positioning, backgrounds, arrows.meta}
+\tcbuselibrary{skins, breakable, theorems}
+
+% DEXPI layer system
+\pgfdeclarelayer{background}
+\pgfdeclarelayer{guides}
+\pgfdeclarelayer{foreground}
+\pgfsetlayers{background,main,guides,foreground}
+
+%--------------------------------------------------------------------------
+% 1.  COLOR PALETTE  (Understanding Motion palette, bridged with DEXPI)
+%--------------------------------------------------------------------------
+% Primary — steel blue (replaces Legrand's orange; close to DEXPI blue)
+\definecolor{ocre}{RGB}{29,104,172}
+\definecolor{ocredark}{RGB}{18,68,115}
+\definecolor{ocrelight}{RGB}{218,232,248}
+
+% DEXPI accent colors (kept for corner decoration & compatibility)
+\definecolor{dexpiBlue}{HTML}{2A578B}
+\definecolor{dexpiLightBlue}{HTML}{CDE3F1}
+\definecolor{dexpiGreen}{HTML}{3FAF8C}
+\definecolor{dexpiRed}{HTML}{C94A4A}
+\definecolor{dexpiGreenLight}{HTML}{DDF3EC}
+\definecolor{dexpiRedLight}{HTML}{F6DADA}
+\definecolor{dexpiGreenDark}{HTML}{2F8A6E}
+\definecolor{dexpiRedDark}{HTML}{9E3636}
+
+% Understanding Motion environment palette
+\definecolor{thmcolor}{RGB}{59,31,140}
+\definecolor{thmbg}{RGB}{240,238,255}
+\definecolor{defcolor}{RGB}{26,107,138}
+\definecolor{defbg}{RGB}{235,247,252}
+\definecolor{lawcolor}{RGB}{30,107,69}
+\definecolor{lawbg}{RGB}{234,250,241}
+\definecolor{exrcolor}{RGB}{193,123,26}
+\definecolor{exrbg}{RGB}{254,249,238}
+\definecolor{corcolor}{RGB}{139,58,82}
+\definecolor{corbg}{RGB}{252,238,242}
+\definecolor{remcolor}{RGB}{42,125,125}
+\definecolor{rembg}{RGB}{237,250,250}
+
+% Dark slide background
+\definecolor{slidebg}{RGB}{12,24,44}
+\definecolor{slidebglight}{RGB}{245,247,252}
+
+%--------------------------------------------------------------------------
+% 2.  BEAMER MODE
+%--------------------------------------------------------------------------
+\mode<presentation>
+
+%--- Fonts (DEXPI style: Helvetica/sffamily) ---
+\usefonttheme{professionalfonts}
+\setbeamerfont{title}{size=\LARGE,series=\bfseries,family=\sffamily}
+\setbeamerfont{subtitle}{size=\normalsize,family=\sffamily}
+\setbeamerfont{author}{size=\large,family=\sffamily}
+\setbeamerfont{institute}{size=\scriptsize,family=\sffamily}
+\setbeamerfont{date}{size=\scriptsize,family=\sffamily}
+\setbeamerfont{frametitle}{size=\Large,series=\bfseries,family=\sffamily}
+\setbeamerfont{framesubtitle}{size=\normalsize,family=\sffamily}
+\setbeamerfont{block title}{size=\normalsize,series=\mdseries,family=\sffamily}
+\setbeamerfont{section in toc}{size=\large,series=\bfseries,family=\sffamily}
+\setbeamerfont{subsection in toc}{size=\small,family=\sffamily}
+
+%--- Colors ---
+\setbeamercolor{normal text}{fg=black!85,bg=slidebglight}
+\setbeamercolor{alerted text}{fg=exrcolor}
+\setbeamercolor{example text}{fg=lawcolor}
+\setbeamercolor{structure}{fg=ocre}
+\setbeamercolor{frametitle}{fg=ocre,bg=white}
+\setbeamercolor{framesubtitle}{fg=ocredark}
+\setbeamercolor{section in toc}{fg=ocre}
+\setbeamercolor{subsection in toc}{fg=ocredark}
+\setbeamercolor{item}{fg=ocre}
+\setbeamercolor{subitem}{fg=ocredark}
+\setbeamercolor{enumerate item}{fg=ocre}
+\setbeamercolor{footline}{fg=ocredark,bg=white}
+
+% Standard Beamer blocks (DEXPI colors)
+\setbeamercolor{block title}{fg=white,bg=ocredark}
+\setbeamercolor{block body}{fg=black!85,bg=ocrelight}
+\setbeamercolor{block title alerted}{fg=white,bg=dexpiRedDark}
+\setbeamercolor{block body alerted}{fg=dexpiRedDark,bg=dexpiRedLight}
+\setbeamercolor{block title example}{fg=white,bg=dexpiGreenDark}
+\setbeamercolor{block body example}{fg=dexpiGreenDark,bg=dexpiGreenLight}
+
+%--------------------------------------------------------------------------
+% 3.  NAVIGATION & MARGINS
+%--------------------------------------------------------------------------
+\setbeamertemplate{navigation symbols}{}
+\setbeamersize{text margin left=2em,text margin right=2em}
+
+%--------------------------------------------------------------------------
+% 4.  BACKGROUND DECORATION  (DEXPI: diagonal corner accent)
+%--------------------------------------------------------------------------
+\usebackgroundtemplate{%
+  \begin{tikzpicture}[remember picture,overlay,baseline]
+    \fill[ocrelight]
+      ([xshift=-3.5cm]current page.north east) --
+      (current page.north east) --
+      ([yshift=1cm]current page.south east) --
+      ([xshift=-5.5cm,yshift=1cm]current page.south east) --
+      cycle;
+    \draw[ocre,line width=0.6pt]
+      ([yshift=1.02cm]current page.south west) --
+      ([yshift=1.02cm]current page.south east);
+  \end{tikzpicture}%
+}
+
+%--------------------------------------------------------------------------
+% 5.  FRAMETITLE  (DEXPI: bold + hrule)
+%--------------------------------------------------------------------------
+\setbeamertemplate{frametitle}{%
+  \vspace*{0.5em}%
+  \usebeamerfont{frametitle}\usebeamercolor[fg]{frametitle}\insertframetitle%
+  \ifx\insertframesubtitle\empty\else
+    \hspace{6pt}{\small\usebeamercolor[fg]{framesubtitle}|\;\insertframesubtitle}%
+  \fi
+  \par\vskip-5pt\hrulefill\vspace{-0.15em}%
+}
+
+%--------------------------------------------------------------------------
+% 6.  FOOTLINE  (Legrand: 3-column; DEXPI: slanted bottom-left mark)
+%--------------------------------------------------------------------------
+\setbeamertemplate{footline}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    % DEXPI diagonal corner mark bottom-left
+    \draw[ocre,line width=1pt]
+      ([xshift=-0.18cm,yshift=0.18cm]current page.south west) --
+      ([xshift=0.72cm,yshift=-0.72cm]current page.south west);
+  \end{tikzpicture}%
+  \leavevmode%
+  \hbox to \paperwidth{%
+    \begin{beamercolorbox}[wd=0.25\paperwidth,ht=0.8cm,dp=0.3cm,left]{footline}%
+      \hspace*{0.4cm}\footnotesize\sffamily\insertshortauthor
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=0.50\paperwidth,ht=0.8cm,dp=0.3cm,center]{footline}%
+      \footnotesize\sffamily\insertshorttitle
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=0.25\paperwidth,ht=0.8cm,dp=0.3cm,right]{footline}%
+      \footnotesize\sffamily\insertframenumber\,/\,\inserttotalframenumber\hspace*{0.4cm}
+    \end{beamercolorbox}%
+  }%
+}
+
+%--------------------------------------------------------------------------
+% 7.  HEADER RULE  (thin ocre strip, Legrand-inspired)
+%--------------------------------------------------------------------------
+\addtobeamertemplate{frametitle}{}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \draw[ocrelight,line width=1.6pt]
+      ([yshift=-3.55ex]current page.north west) --
+      ([yshift=-3.55ex]current page.north east);
+    \draw[ocre,line width=1.6pt]
+      ([yshift=-3.55ex]current page.north west) --
+      ([yshift=-3.55ex]current page.north east);
+  \end{tikzpicture}%
+}
+
+%--------------------------------------------------------------------------
+% 8.  BULLET ITEMS  (Legrand-style colored shapes)
+%--------------------------------------------------------------------------
+\setbeamertemplate{itemize item}{\color{ocre}\textbullet}
+\setbeamertemplate{itemize subitem}{\color{ocredark}\textendash}
+\setbeamertemplate{itemize subsubitem}{\color{defcolor}$\circ$}
+\setbeamertemplate{enumerate item}{\color{ocre}\textbf{\insertenumlabel.}}
+\setbeamertemplate{enumerate subitem}{\color{ocredark}\textbf{\insertenumlabel.}}
+
+%--------------------------------------------------------------------------
+% 9.  TABLE OF CONTENTS  (numbered badges, Legrand style)
+%--------------------------------------------------------------------------
+\setbeamertemplate{section in toc}{%
+  \vspace{2pt}%
+  {\color{ocre}\bfseries\sffamily\inserttocsectionnumber.}\hspace{6pt}%
+  \usebeamerfont{section in toc}\usebeamercolor[fg]{section in toc}\inserttocsection\par%
+}
+\setbeamertemplate{subsection in toc}{%
+  \leavevmode\leftskip=2.5em%
+  {\color{ocredark}\inserttocsectionnumber.\inserttocsubsectionnumber}\hspace{5pt}%
+  \usebeamerfont{subsection in toc}\inserttocsubsection\par%
+}
+
+%--------------------------------------------------------------------------
+% 10.  BLOCK STYLING  (DEXPI-inspired colored headers)
+%--------------------------------------------------------------------------
+% Normal block
+\setbeamertemplate{block begin}{%
+  \par\vskip\medskipamount%
+  \begingroup%
+    \begin{beamercolorbox}[wd=\linewidth,ht=2.4ex,dp=0.8ex,
+                           leftskip=8pt,rightskip=4pt]{block title}%
+      \usebeamerfont{block title}\insertblocktitle%
+    \end{beamercolorbox}%
+    \vskip-0.5pt%
+    \begin{beamercolorbox}[wd=\linewidth,sep=6pt,vmode]{block body}%
+      \usebeamerfont{block body}%
+}
+\setbeamertemplate{block end}{%
+    \end{beamercolorbox}%
+  \endgroup\vskip\smallskipamount%
+}
+
+% Alerted block
+\setbeamertemplate{block alerted begin}{%
+  \par\vskip\medskipamount%
+  \begingroup%
+    \begin{beamercolorbox}[wd=\linewidth,ht=2.4ex,dp=0.8ex,
+                           leftskip=8pt,rightskip=4pt]{block title alerted}%
+      \usebeamerfont{block title}\insertblocktitle%
+    \end{beamercolorbox}%
+    \vskip-0.5pt%
+    \begin{beamercolorbox}[wd=\linewidth,sep=6pt,vmode]{block body alerted}%
+      \usebeamerfont{block body}%
+}
+\setbeamertemplate{block alerted end}{%
+    \end{beamercolorbox}%
+  \endgroup\vskip\smallskipamount%
+}
+
+% Example block
+\setbeamertemplate{block example begin}{%
+  \par\vskip\medskipamount%
+  \begingroup%
+    \begin{beamercolorbox}[wd=\linewidth,ht=2.4ex,dp=0.8ex,
+                           leftskip=8pt,rightskip=4pt]{block title example}%
+      \usebeamerfont{block title}\insertblocktitle%
+    \end{beamercolorbox}%
+    \vskip-0.5pt%
+    \begin{beamercolorbox}[wd=\linewidth,sep=6pt,vmode]{block body example}%
+      \usebeamerfont{block body}%
+}
+\setbeamertemplate{block example end}{%
+    \end{beamercolorbox}%
+  \endgroup\vskip\smallskipamount%
+}
+
+%--------------------------------------------------------------------------
+% 11.  TITLE PAGE  (DEXPI slanted polygon layout + Legrand watermark)
+%--------------------------------------------------------------------------
+\def\umtitlebg{}
+\newcommand{\settitlebg}[1]{\def\umtitlebg{#1}}
+
+\setbeamertemplate{title page}{%
+  \begin{tikzpicture}[remember picture,overlay,
+                      x=\paperwidth,y=\paperheight,
+                      shift={(current page.south west)}]
+
+    \def\slant{10}
+    \def\lenA{0.10}  % bottom of diagonal strip
+    \def\lenB{0.15}  % strip width
+    \def\lenC{0.60}  % title block height from top
+    \def\lenD{0.38}  % right slant height
+    \def\lenE{0.68}  % title block x-width
+
+    \coordinate (A) at (0.5,0.0);
+    \coordinate (B) at ($(A)+(90-\slant:\lenA)$);
+    \coordinate (C) at ($(B)+(-\lenB,0)$);
+    \coordinate (D) at ($(B)+(90-\slant:0.94)$);
+    \coordinate (E) at ($(C)+(90-\slant:0.94)$);
+    \path let \p1=(B) in coordinate (F) at (1,\y1);
+    \path let \p1=(A) in coordinate (G) at (1,\y1);
+
+    \coordinate (I) at (0.0,{1-\lenC});
+    \coordinate (J) at (\lenE,{1-\lenC});
+    \coordinate (K) at ($(J)+(90-\slant:\lenD)$);
+    \path let \p1=(K) in coordinate (L) at (0.0,\y1);
+
+    \begin{pgfonlayer}{background}
+      % If a cover image is set, clip it into the upper-right polygon
+      \ifx\umtitlebg\empty
+        \fill[top color=slidebg,bottom color=ocredark]
+          (B)--(F)--(1,1)--(D)--cycle;
+      \else
+        \begin{scope}
+          \clip (B)--(F)--(1,1)--(D)--cycle;
+          \node[anchor=south west,inner sep=0] at (B)
+            {\includegraphics[width=\paperwidth]{\umtitlebg}};
+        \end{scope}
+        \fill[black,opacity=0.35] (B)--(F)--(1,1)--(D)--cycle;
+      \fi
+      % Left strip (light blue, diagonal)
+      \fill[ocrelight] (C)--(B)--(D)--(E)--cycle;
+      % Center dark strip (navy)
+      \fill[ocredark,opacity=0.85] (A)--(G)--(F)--(B)--cycle;
+      % Title block (ocre blue)
+      \fill[ocre] (I)--(J)--(K)--(L)--cycle;
+    \end{pgfonlayer}
+
+    % Legrand-style faint watermark numeral
+    \node[anchor=south east,opacity=0.06] at (1,0)
+      {\color{white}\fontsize{200}{200}\selectfont\sffamily\bfseries 1};
+
+    % DEXPI diagonal corner mark (bottom-left)
+    \draw[ocre,line width=1pt]
+      ([xshift=-0.18cm,yshift=0.18cm]current page.south west) --
+      ([xshift=0.72cm,yshift=-0.72cm]current page.south west);
+
+    \begin{pgfonlayer}{foreground}
+      % Title text
+      \node[anchor=west,text=white,font=\bfseries\LARGE,
+            text width=.72\paperwidth,align=left]
+        at ([xshift=0.6cm,yshift=-3.0cm]current page.north west)
+        {\inserttitle};
+      % Subtitle
+      \node[anchor=west,text=white!85!ocrelight,font=\normalsize,
+            text width=.68\paperwidth,align=left]
+        at ([xshift=0.6cm,yshift=-4.6cm]current page.north west)
+        {\insertsubtitle};
+    \end{pgfonlayer}
+  \end{tikzpicture}
+
+  % Author / Institute / Date — positioned below
+  \vspace{0.66\paperheight}
+  {\usebeamerfont{author}\color{ocredark}\insertauthor}\par
+  \vspace{0.3em}
+  {\usebeamerfont{institute}\color{ocredark!80}\insertinstitute}\par
+  \vspace{0.5em}
+  {\usebeamerfont{date}\color{ocredark!60}\insertdate}
+}
+
+%--------------------------------------------------------------------------
+% 12.  SECTION DIVIDER SLIDE
+%--------------------------------------------------------------------------
+\def\umsectionbg{}
+\newcommand{\setsectionbg}[1]{\def\umsectionbg{#1}}
+
+% NOTE: Section divider slides are defined in main.tex via \AtBeginSection{}.
+% Use \setsectionbg{imagefile} before a \section{} to set a background image
+% for that section's divider slide.
+
+%--------------------------------------------------------------------------
+% 13.  END CARD
+%--------------------------------------------------------------------------
+\newcommand{\umendframe}{%
+  \begin{frame}[plain]
+    \begin{tikzpicture}[remember picture,overlay]
+      \fill[top color=slidebg,bottom color=ocredark]
+        (current page.south west) rectangle (current page.north east);
+      \node[opacity=0.07] at (current page.center)
+        {\color{white}\fontsize{200}{200}\selectfont\sffamily\bfseries ?};
+      \draw[ocre,line width=1pt]
+        ([xshift=-28mm,yshift=0]current page.center) --
+        ([xshift=28mm,yshift=0]current page.center);
+      \node[text=white,font=\Large\sffamily\bfseries,anchor=south]
+        at ([yshift=4mm]current page.center){Thank You};
+      \node[text=ocrelight,font=\normalsize\sffamily,anchor=north]
+        at ([yshift=-3mm]current page.center){\insertauthor};
+    \end{tikzpicture}
+  \end{frame}%
+}
+
+%--------------------------------------------------------------------------
+% 14.  TCOLORBOX ENVIRONMENTS  (Understanding Motion / Legrand Orange Book)
+%--------------------------------------------------------------------------
+\tcbset{umslide/.style={
+  enhanced,breakable,sharp corners,
+  leftrule=3.5pt,toprule=0.35pt,bottomrule=0.35pt,rightrule=0.35pt,
+  left=7pt,right=7pt,top=5pt,bottom=5pt,
+  before skip=7pt,after skip=7pt,
+  fonttitle=\sffamily\bfseries\small,
+}}
+
+% Theorem — Deep Indigo
+\newtcolorbox[auto counter,number within=section]{umtheorem}[2][]{%
+  umslide,colback=thmbg,colframe=thmcolor,coltitle=white,
+  title={Theorem~\thetcbcounter\ifx\relax#2\relax\else\ |\ #2\fi},
+  attach boxed title to top left={yshift=-2mm,xshift=6pt},
+  boxed title style={colback=thmcolor,sharp corners,
+    left=3pt,right=3pt,top=1.5pt,bottom=1.5pt},#1}
+
+% Definition — Ocean Blue
+\newtcolorbox[auto counter,number within=section]{umdefinition}[2][]{%
+  umslide,toprule=0pt,bottomrule=0pt,rightrule=0pt,
+  colback=defbg,colframe=defcolor,coltitle=white,
+  title={Definition~\thetcbcounter\ifx\relax#2\relax\else\ |\ #2\fi},
+  attach boxed title to top left={yshift=-2mm,xshift=6pt},
+  boxed title style={colback=defcolor,sharp corners,
+    left=3pt,right=3pt,top=1.5pt,bottom=1.5pt},#1}
+
+% Law / Key Concept — Forest Green
+\newtcolorbox{umlaw}[1]{%
+  umslide,colback=lawbg,colframe=lawcolor,coltitle=white,title={#1},
+  attach boxed title to top left={yshift=-2mm,xshift=6pt},
+  boxed title style={colback=lawcolor,sharp corners,
+    left=3pt,right=3pt,top=1.5pt,bottom=1.5pt}}
+
+% Example — Amber
+\newtcolorbox[auto counter,number within=section]{umexample}[2][]{%
+  umslide,colback=exrbg,colframe=exrcolor,coltitle=white,
+  title={Example~\thetcbcounter\ifx\relax#2\relax\else\ |\ #2\fi},
+  attach boxed title to top left={yshift=-2mm,xshift=6pt},
+  boxed title style={colback=exrcolor,sharp corners,
+    left=3pt,right=3pt,top=1.5pt,bottom=1.5pt},#1}
+
+% Corollary — Dusty Rose
+\newtcolorbox[auto counter,number within=section]{umcorollary}[2][]{%
+  umslide,toprule=0pt,bottomrule=0pt,rightrule=0pt,
+  colback=corbg,colframe=corcolor,coltitle=white,
+  title={Corollary~\thetcbcounter\ifx\relax#2\relax\else\ |\ #2\fi},
+  attach boxed title to top left={yshift=-2mm,xshift=6pt},
+  boxed title style={colback=corcolor,sharp corners,
+    left=3pt,right=3pt,top=1.5pt,bottom=1.5pt},#1}
+
+% Note / Remark — Teal
+\newtcolorbox{umnote}[1][Note]{%
+  umslide,toprule=0pt,bottomrule=0pt,rightrule=0pt,
+  colback=rembg,colframe=remcolor,coltitle=white,title={#1},
+  attach boxed title to top left={yshift=-2mm,xshift=6pt},
+  boxed title style={colback=remcolor,sharp corners,
+    left=3pt,right=3pt,top=1.5pt,bottom=1.5pt}}
+
+% Formula highlight — ocre accent
+\newtcolorbox{umformula}[1][]{%
+  enhanced,sharp corners,breakable,
+  colback=ocrelight,colframe=ocre,
+  top=4pt,bottom=4pt,left=10pt,right=10pt,
+  leftrule=4pt,toprule=0.4pt,bottomrule=0.4pt,rightrule=0.4pt,
+  before skip=7pt,after skip=7pt,#1}
+
+%--------------------------------------------------------------------------
+% 15.  UTILITY: two-column helper
+%--------------------------------------------------------------------------
+\newcommand{\umcols}[3][0.48]{%
+  \begin{columns}[T]
+    \begin{column}{#1\textwidth}#2\end{column}
+    \hfill
+    \begin{column}{\dimexpr(1-#1)\textwidth-4pt\relax}#3\end{column}
+  \end{columns}%
+}
+
+%--------------------------------------------------------------------------
+% 16.  FULL-IMAGE SLIDE HELPER  \umfullimage{file}{caption}
+%--------------------------------------------------------------------------
+\newcommand{\umfullimage}[2]{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \begin{scope}
+      \clip (current page.south west) rectangle (current page.north east);
+      \node[anchor=center] at (current page.center)
+        {\includegraphics[height=\paperheight]{#1}};
+    \end{scope}
+    \fill[black,opacity=0.40]
+      (current page.south west) rectangle (current page.north east);
+    \node[anchor=south,text=white,font=\small\sffamily,fill=black,
+          fill opacity=0.5,text opacity=1,rounded corners=2pt,
+          inner sep=4pt] at ([yshift=5mm]current page.south){#2};
+  \end{tikzpicture}%
+}
+
+\mode<all>
+\endinput

@@ -1,0 +1,15 @@
+# LaTeX auxiliary/build files
+*.aux
+*.log
+*.nav
+*.snm
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.bbl
+*.blg
+*.thm
+*.pre
+*.vrb
